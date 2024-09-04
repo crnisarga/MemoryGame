@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
@@ -20,5 +21,9 @@ class MainActivity : AppCompatActivity() {
         memoryBoard = findViewById(R.id.memoryBoard)
         movesButton = findViewById(R.id.moves)
         pairsButton = findViewById(R.id.pairs)
+
+        memoryBoard.adapter = MemoryBoardAdapter(this,8);
+        memoryBoard.setHasFixedSize(true);
+        memoryBoard.layoutManager = GridLayoutManager(this,2);
     }
 }
