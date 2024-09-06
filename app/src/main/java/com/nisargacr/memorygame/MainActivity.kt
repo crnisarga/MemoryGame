@@ -1,11 +1,14 @@
 package com.nisargacr.memorygame
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import models.BoardSize
+import com.nisargacr.memorygame.models.BoardSize
+import com.nisargacr.memorygame.models.MemoryCard
+import com.nisargacr.memorygame.models.MemoryGame
 import utils.Default_Icons
 
 class MainActivity : AppCompatActivity() {
@@ -25,10 +28,14 @@ class MainActivity : AppCompatActivity() {
         movesButton = findViewById(R.id.moves)
         pairsButton = findViewById(R.id.pairs)
 
-        val chosenImages = Default_Icons.shuffled().take(boardSize.getNumPaires())
-        val randomizedImages = (chosenImages + chosenImages).shuffled()
+        val memoryGame = MemoryGame(boardSize)
 
-        memoryBoard.adapter = MemoryBoardAdapter(this,boardSize,randomizedImages);
+        memoryBoard.adapter = MemoryBoardAdapter(this,boardSize,memoryGame.cards,object : MemoryBoardAdapter.CardClickListener {
+            override fun onCardClicked(position: Int) {
+                Log.d("click","CardClicked")
+            }
+
+        })
         memoryBoard.setHasFixedSize(true);
         memoryBoard.layoutManager = GridLayoutManager(this,boardSize.getWidth());
     }

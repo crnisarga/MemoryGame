@@ -1,4 +1,4 @@
-package models
+package com.nisargacr.memorygame.models
 
 enum class BoardSize(val numCards : Int) {
     Easy(8),

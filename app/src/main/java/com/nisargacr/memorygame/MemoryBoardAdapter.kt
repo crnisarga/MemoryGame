@@ -9,13 +9,15 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import models.BoardSize
+import com.nisargacr.memorygame.models.BoardSize
+import com.nisargacr.memorygame.models.MemoryCard
 import kotlin.math.min
 
 class MemoryBoardAdapter(
     private val context: Context,
     private val boardSize: BoardSize,
-    private val cardImages: List<Int>
+    private val cards: List<MemoryCard>,
+    private val cardClickListener: CardClickListener
 ) :
     RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
 
@@ -23,6 +25,9 @@ class MemoryBoardAdapter(
             private const val MarginSize = 10
         }
 
+    interface CardClickListener {
+        fun onCardClicked(position: Int)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardWidth = parent.width / boardSize.getWidth() - (2 * MarginSize)
         val cardHeight = parent.height / boardSize.getHeight() - (2 * MarginSize)
@@ -45,9 +50,16 @@ class MemoryBoardAdapter(
 
         private  val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
         fun bind(position: Int) {
-            imageButton.setImageResource(cardImages[position])
+            val cardMemory = cards[position]
+            imageButton.setImageResource(
+                if (cardMemory.isFaceUp)
+                cardMemory.identifier
+                else
+                R.drawable.ic_launcher_background
+            )
             imageButton.setOnClickListener {
                 Log.d("myWork","the image clicked is in position $position")
+                cardClickListener.onCardClicked(position)
             }
         }
     }
