@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.nisargacr.memorygame.models.BoardSize
 import com.nisargacr.memorygame.models.MemoryCard
@@ -57,6 +59,9 @@ class MemoryBoardAdapter(
                 else
                 R.drawable.ic_launcher_background
             )
+            imageButton.alpha = if (cardMemory.isMatched) .4f else 1.0f
+            val colourStateList = if (cardMemory.isMatched) ContextCompat.getColorStateList(context,R.color.grey) else null
+            ViewCompat.setBackgroundTintList(imageButton,colourStateList)
             imageButton.setOnClickListener {
                 Log.d("myWork","the image clicked is in position $position")
                 cardClickListener.onCardClicked(position)
