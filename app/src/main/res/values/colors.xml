@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pinkred">#FF4081</color>
     <color name="grey">#1D9C9094</color>
+    <color name="color_progress_none">#D11B0E</color>
+    <color name="color_progress_full">#29AD2F</color>
 </resources>

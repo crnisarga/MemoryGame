@@ -5,8 +5,10 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.ArgbEvaluator
 import com.google.android.material.snackbar.Snackbar
 import com.nisargacr.memorygame.models.BoardSize
 import com.nisargacr.memorygame.models.MemoryCard
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         pairsButton = findViewById(R.id.pairs)
         clRoot = findViewById(R.id.main)
 
+        pairsButton.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
+
         memoryGame = MemoryGame(boardSize)
 
         adapter = MemoryBoardAdapter(this,boardSize,memoryGame.cards,object : MemoryBoardAdapter.CardClickListener {
@@ -54,10 +58,27 @@ class MainActivity : AppCompatActivity() {
             return
         }
         if (memoryGame.isCardFaceUp(position)) {
-            Snackbar.make(clRoot,"The Card Is Face UP",Snackbar.LENGTH_LONG).show()
+            Snackbar.make(clRoot,"The Card Is Face UP",Snackbar.LENGTH_SHORT).show()
             return
         }
-        memoryGame.flipCard(position)
+
+
+        if (memoryGame.flipCard(position)) {
+
+            val color = android.animation.ArgbEvaluator().evaluate(
+                memoryGame.numPairsFound.toFloat() / boardSize.getNumPaires(),
+                ContextCompat.getColor(this, R.color.color_progress_none),
+                ContextCompat.getColor(this, R.color.color_progress_full)
+            ) as Int
+
+            pairsButton.setTextColor(color)
+            pairsButton.text = "Pairs: ${memoryGame.numPairsFound}/${boardSize.getNumPaires()}"
+            if(memoryGame.haveWonGame()) {
+                Snackbar.make(clRoot, "You Won The Game Hurray", Snackbar.LENGTH_LONG).show()
+            }
+        }
+
+        movesButton.text = "Moves: ${memoryGame.getNumMoves()}"
         adapter.notifyDataSetChanged()
     }
 }
