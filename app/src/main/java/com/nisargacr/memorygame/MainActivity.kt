@@ -48,16 +48,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun  updateGameWithFlip(position: Int) {
-        memoryGame.flipCard(position)
 
         if(memoryGame.haveWonGame()) {
             Snackbar.make(clRoot, "You Won The Game Hurray", Snackbar.LENGTH_LONG).show()
             return
         }
-//        if (memoryGame.isCardFaceUp(position)) {
-//            Snackbar.make(clRoot,"The Card Is Face UP",Snackbar.LENGTH_LONG).show()
-//            return
-//        }
+        if (memoryGame.isCardFaceUp(position)) {
+            Snackbar.make(clRoot,"The Card Is Face UP",Snackbar.LENGTH_LONG).show()
+            return
+        }
+        memoryGame.flipCard(position)
         adapter.notifyDataSetChanged()
     }
 }
